@@ -7,12 +7,18 @@ import {
   InputField,
   InputContainer,
   Label,
+  LoginCard,
 } from '../StyledComponents/StyledComponents'
 
 import './index.css'
 
 class Login extends Component {
-  state = {username: '', password: '', showPass: false}
+  state = {
+    username: '',
+    password: '',
+    showPass: false,
+    errorMsg: {message: '', showMsg: false},
+  }
 
   onChangeUsername = event => this.setState({username: event.target.value})
 
@@ -21,10 +27,34 @@ class Login extends Component {
   onClickCheckbox = () =>
     this.setState(prevState => ({showPass: !prevState.showPass}))
 
-  onClickLogin = () => {
-    Cookies.set('jwtToken', 'dafaf', {expires: 30})
+  onSuccess = jwtToken => {
+    Cookies.set('jwt_token', jwtToken, {expires: 30})
     const {history} = this.props
     history.replace('/')
+  }
+
+  onFailure = errorMsg => {
+    this.setState({errorMsg: {message: errorMsg, showMsg: true}})
+  }
+
+  onClickLogin = async event => {
+    event.preventDefault()
+    const {username, password} = this.state
+    const userDetails = {username, password}
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+    }
+    const url = 'https://apis.ccbp.in/login'
+
+    const response = await fetch(url, options)
+    const data = await response.json()
+    console.log(response)
+    if (response.ok === true) {
+      this.onSuccess(data.jwt_token)
+    } else {
+      this.onFailure(data.error_msg)
+    }
   }
 
   renderUsernameInputField = () => {
@@ -44,13 +74,13 @@ class Login extends Component {
   }
 
   renderPasswordInputField = () => {
-    const {password} = this.state
+    const {password, showPass} = this.state
 
     return (
       <InputContainer>
         <Label>PASSWORD</Label>
         <InputField
-          type="password"
+          type={showPass ? 'text' : 'password'}
           value={password}
           onChange={this.onChangePassword}
           placeholder="Password"
@@ -64,7 +94,7 @@ class Login extends Component {
 
     return (
       <InputContainer>
-        <div>
+        <div className="checkbox-container">
           <InputField
             type="checkbox"
             onChange={this.onClickCheckbox}
@@ -79,7 +109,9 @@ class Login extends Component {
   }
 
   render() {
-    if (Cookies.get('jwtToken') !== undefined) {
+    const {errorMsg} = this.state
+
+    if (Cookies.get('jwt_token') !== undefined) {
       const {history} = this.props
       history.replace('/')
     }
@@ -88,7 +120,7 @@ class Login extends Component {
       <ThemeContext.Consumer>
         {value => (
           <BGContainer isDark={value.isDark}>
-            <div className="login-card">
+            <LoginCard isDark={value.isDark}>
               <div className="logo-container">
                 <img
                   src={
@@ -105,10 +137,21 @@ class Login extends Component {
                   {this.renderUsernameInputField()}
                   {this.renderPasswordInputField()}
                   {this.renderCheckbox()}
-                  <button type="submit">Login</button>
+
+                  {errorMsg.showMsg ? (
+                    <p className="error-message">*{errorMsg.message}</p>
+                  ) : null}
+
+                  <button
+                    type="submit"
+                    className="login-button"
+                    onClick={this.onClickLogin}
+                  >
+                    Login
+                  </button>
                 </form>
               </div>
-            </div>
+            </LoginCard>
           </BGContainer>
         )}
       </ThemeContext.Consumer>

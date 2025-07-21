@@ -11,7 +11,7 @@ import ThemeContext from './context/ThemeContext'
 import './App.css'
 
 class App extends Component {
-  state = {isDark: false}
+  state = {isDark: true}
 
   onChangeTheme = () =>
     this.setState(prevState => ({isDark: !prevState.isDark}))

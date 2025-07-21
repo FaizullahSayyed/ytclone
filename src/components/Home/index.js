@@ -8,7 +8,7 @@ import {
 import ThemeContext from '../../context/ThemeContext'
 
 const Home = props => {
-  if (Cookies.get('jwtToken') === undefined) {
+  if (Cookies.get('jwt_token') === undefined) {
     return <Redirect to="/login" />
   }
 
@@ -22,7 +22,7 @@ const Home = props => {
         }
 
         const onClickLogout = () => {
-          Cookies.remove('jwtToken')
+          Cookies.remove('jwt_token')
           const {history} = props
           history.replace('/login')
         }
