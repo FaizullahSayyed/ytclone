@@ -1,17 +1,14 @@
 import styled from 'styled-components'
 
+// Common styles reusable across components
 export const BGContainer = styled.div`
   background-color: ${props => (props.isDark ? '#231f20' : '#ffffff')};
   height: 100dvh;
   color: ${props => (props.isDark ? '#ffffff' : '#000000')};
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-export const ChangeTheme = styled.button`
-  background-color: ${props => (props.isDark ? '#ffffff' : '#000000')};
-  color: ${props => (props.isDark ? '#000000' : '#ffffff')};
 `
 
 export const LoginCard = styled.div`
@@ -47,4 +44,15 @@ export const Label = styled.label`
   margin-bottom: 10px;
   margin-top: 13px;
   color: ${props => (props.isDark ? '#000000' : '#94a3b8')};
+`
+// DS for Header Component
+export const HeaderContainer = styled.div`
+    background-color: background-color: ${props =>
+      props.isDark ? '#000000' : '#ffffff'};
+      color: ${props => (props.isDark ? '#ffffff' : '#000000')};
+`
+
+export const ChangeThemeButton = styled.button`
+  background-color: ${props => (props.isDark ? '#ffffff' : '#000000')};
+  color: ${props => (props.isDark ? '#000000' : '#ffffff')};
 `

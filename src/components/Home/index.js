@@ -6,6 +6,7 @@ import {
   LogoutButton,
 } from '../StyledComponents/StyledComponents'
 import ThemeContext from '../../context/ThemeContext'
+import Header from '../Header'
 
 const Home = props => {
   if (Cookies.get('jwt_token') === undefined) {
@@ -28,14 +29,9 @@ const Home = props => {
         }
 
         return (
-          <BGContainer isDark={isDark}>
-            Home{' '}
-            <ChangeTheme onClick={changeTheme} isDark={isDark}>
-              Change Theme
-            </ChangeTheme>
-            <LogoutButton onClick={onClickLogout} isDark={isDark}>
-              Logout
-            </LogoutButton>
+          <BGContainer isDark={isDark} home>
+            <Header />
+            <div>Home</div>
           </BGContainer>
         )
       }}

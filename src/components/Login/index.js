@@ -128,7 +128,7 @@ class Login extends Component {
                       ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
                       : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
                   }
-                  alt="next watch"
+                  alt="website logo"
                   className="logo"
                 />
               </div>
